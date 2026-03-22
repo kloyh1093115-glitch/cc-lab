@@ -1,0 +1,24 @@
+{
+  "name": "cc-lab",
+  "owner": {
+    "name": "kloyh1093115-glitch"
+  },
+  "metadata": {
+    "description": "研究室シミュレーター。教授が思考・判断に集中し、サブエージェントに作業を委託する。"
+  },
+  "plugins": [
+    {
+      "name": "lab",
+      "source": ".",
+      "description": "研究室シミュレーター。教授が思考・判断に集中し、サブエージェントに作業を委託する。成果物は .lab/ に蓄積。",
+      "version": "1.0.0",
+      "author": {
+        "name": "kloyh1093115-glitch"
+      },
+      "repository": "https://github.com/kloyh1093115-glitch/cc-lab",
+      "license": "MIT",
+      "category": "productivity",
+      "tags": ["lab", "research", "professor", "subagent", "academic"]
+    }
+  ]
+}
