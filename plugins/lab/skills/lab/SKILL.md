@@ -85,17 +85,15 @@ e. **直近で最も困っていることは？**
 ```
 .lab/
 ├── CLAUDE.md              ← 研究の名刺（references/claude-md-template.md から生成）
-├── STATE.md               ← 教授STATE（references/state-templates.md から生成）
+├── STATE.md               ← 研究の本体（references/state-templates.md から生成）
 ├── log.md                 ← 空で作成
 ├── log-archive/
 │
 ├── theory/
-│   ├── STATE.md
 │   ├── active/
 │   └── archive/
 │
 ├── experiments/
-│   ├── STATE.md
 │   ├── notebook/
 │   ├── active/
 │   │   ├── results/
@@ -103,12 +101,12 @@ e. **直近で最も困っていることは？**
 │   └── archive/
 │
 └── literature/
-    ├── STATE.md
     ├── active/
     └── archive/
 ```
 
 ※ `paper/` は論文の話が出るまで作成しない。
+※ STATE.md は `.lab/STATE.md` の1ファイルに統合。全領域の状態をここに書く。
 
 **生成手順：**
 
@@ -117,15 +115,15 @@ e. **直近で最も困っていることは？**
    - `{{RESEARCH_TOPIC}}` ← Q1 の回答
    - `{{CURRENT_PHASE}}` ← Q2a の回答
    - `{{PERSONALIZATION_NOTES}}` ← ヒアリング全体から生成
-3. `references/state-templates.md` のテンプレートを使って各 STATE.md を生成
-   - 教授 STATE.md にヒアリング結果（仮説・フェーズ・実験結果・先行研究の状況）を反映
-   - 各領域 STATE.md は初期状態で作成
+3. `references/state-templates.md` のテンプレートを使って `.lab/STATE.md` を生成
+   - ヒアリング結果（仮説・フェーズ・実験結果・先行研究の状況）を各セクションに反映
+   - 要約ではなく、次のセッションでゼロから再開できる詳細さで書く
 4. `log.md` を空ファイルで作成
 5. 既存ファイルがある場合（Q3でパスが指定された場合）：
    - 教授がフォルダの中身を確認
    - 現行ファイル → 適切な active/ に配置
    - 不要なファイル → 適切な archive/ に配置
-   - 教授STATE.md + 各領域STATE.md に初期状態を記録
+   - STATE.md の各セクションに初期状態を記録
 6. MCP設定の提案（Semantic Scholar API + Perplexity）
 
 **完了メッセージ：**
@@ -134,12 +132,12 @@ e. **直近で最も困っていることは？**
 >
 > ```
 > .lab/
-> ├── CLAUDE.md
-> ├── STATE.md
-> ├── log.md
-> ├── theory/     （理論）
-> ├── experiments/ （実験）
-> └── literature/  （文献）
+> ├── CLAUDE.md    （研究の名刺）
+> ├── STATE.md     （研究の本体）
+> ├── log.md       （時系列インデックス）
+> ├── theory/      （理論 active/archive）
+> ├── experiments/  （実験 active/notebook/archive）
+> └── literature/   （文献 active/archive）
 > ```
 >
 > これからは `/lab` でいつでも研究室に入れます。
@@ -159,10 +157,8 @@ e. **直近で最も困っていることは？**
 以下の順で読み込む。記憶に頼らない。
 
 1. `.lab/CLAUDE.md`（研究概要の確認）
-2. `.lab/STATE.md`（教授STATE）
-3. `theory/STATE.md`, `experiments/STATE.md`, `literature/STATE.md`
-4. `paper/STATE.md`（存在する場合のみ）
-5. `log.md`（最新10件。全部読むのは明示的に求められたときだけ）
+2. `.lab/STATE.md`（研究の本体。全領域の状態が入っている）
+3. `log.md`（最新10件。全部読むのは明示的に求められたときだけ）
 
 コンパクションが起きた場合は `/lab` を再度実行する。
 
@@ -179,9 +175,9 @@ e. **直近で最も困っていることは？**
 
 | パターン | 対応 |
 |---------|------|
-| 壁打ち・相談・ブレスト | 対話で深掘り。重要な洞察は即座に教授STATE.mdの洞察欄に書く |
-| 統合思考 | 複数領域のSTATE.mdを突き合わせて矛盾検出・方向づけ |
-| 論文執筆 | paper/STATE.md参照 → 執筆 → 整合性確認 |
+| 壁打ち・相談・ブレスト | 対話で深掘り。重要な洞察は即座にSTATE.mdの洞察欄に書く |
+| 統合思考 | STATE.mdの各領域セクションを突き合わせて矛盾検出・方向づけ |
+| 論文執筆 | STATE.mdの論文セクション参照 → 執筆 → 整合性確認 |
 | 「一緒に読もう」「議論したい」 | 教授が直接ファイルを読んで議論 |
 | 方向性の判断 | 次のアクション候補から選択、仮説レジストリ更新 |
 
@@ -208,7 +204,7 @@ e. **直近で最も困っていることは？**
 
 ### 研究フェーズ別の判断基準
 
-教授STATE.mdの「現在のフェーズ」に応じて判断を変える：
+STATE.mdの「現在のフェーズ」に応じて判断を変える：
 - **探索**: 幅広く仮説を出す。発散を歓迎する
 - **仮説検証**: 1つの仮説を潰しにいく。収束を優先する
 - **論文執筆**: 新しい実験より整合性を優先する
@@ -230,10 +226,10 @@ e. **直近で最も困っていることは？**
 
 | メンバー | 役割 | 参照範囲 | effort | 起動条件 |
 |---------|------|---------|--------|---------|
-| 理論家 | 証明構築・定式化 | 教授STATE + theory/STATE + theory/active/ | 証明時 max / 他 high | 教授が判断 |
-| 実験家 | コード実装・実験実行・可視化 | 教授STATE + experiments/STATE + experiments/active/ + notebook/ | high | 教授が判断 |
-| 文献調査員 | 論文要約・サーベイ・比較表・BibTeX | 教授STATE + literature/STATE + literature/active/ | high | 教授が判断 |
-| レビュアー | 批判的評価 + 新しい洞察 | 教授STATE + 全領域STATE + 教授指定のactive/・notebook/ | max | /lab review |
+| 理論家 | 証明構築・定式化 | STATE.md + theory/active/ | 証明時 max / 他 high | 教授が判断 |
+| 実験家 | コード実装・実験実行・可視化 | STATE.md + experiments/active/ + notebook/ | high | 教授が判断 |
+| 文献調査員 | 論文要約・サーベイ・比較表・BibTeX | STATE.md + literature/active/ | high | 教授が判断 |
+| レビュアー | 批判的評価 + 新しい洞察 | STATE.md + 教授指定のactive/・notebook/ | max | /lab review |
 
 ### サブエージェントのライフサイクル
 
@@ -246,8 +242,8 @@ e. **直近で最も困っていることは？**
 
 **教授 → サブエージェント（起動時）：**
 - 具体的なゴール
-- 参照ファイルパス（教授STATE.md + 自領域STATE.md は常に含む）
-- 必要に応じて他領域のSTATE.mdや特定ファイルのパスを追加指定
+- 参照ファイルパス（STATE.md は常に含む）
+- 必要に応じて特定のactive/ファイルのパスを追加指定
 - 出力先
 
 **理論家 → 教授：**
@@ -273,12 +269,12 @@ e. **直近で最も困っていることは？**
 ### 教授のコンテキスト
 
 **読むもの（デフォルト）：**
-- CLAUDE.md, STATE.md（教授）, 全領域STATE.md, log.md（最新10件）
+- CLAUDE.md, STATE.md, log.md（最新10件）
 - サブエージェントの返答
 
 **読まないもの（デフォルト）：**
 - active/ のファイル群（STATE.mdの記述とサブエージェントの返答で把握する）
-- notebook/（実験家が管理。結果はexperiments/STATE.mdと返答で把握する）
+- notebook/（実験家が管理。結果はSTATE.mdの実験セクションと返答で把握する）
 
 **例外（教授がactive/を直接読む場面）：**
 - ユーザーと論文を議論するとき（「一緒に読もう」「議論したい」）
@@ -290,8 +286,8 @@ e. **直近で最も困っていることは？**
 
 - 教授が起動時に渡す情報で参照範囲が決まる
 - サブエージェントが自分で範囲を広げてはいけない
-- 全サブエージェントは教授STATE.mdを読める（研究の全体像・仮説・フェーズを把握するため）
-- 他領域のSTATE.mdやactive/は教授が明示的に指定した場合のみ
+- 全サブエージェントはSTATE.mdを読める（研究の全体像・仮説・フェーズを把握するため）
+- active/は自分の領域のみ。他領域のactive/は教授が明示的に指定した場合のみ
 - 実験家のみ：自分の領域のnotebook/（過去実験の参照。読み書き可）
 
 ### 並列起動
@@ -338,16 +334,16 @@ e. **直近で最も困っていることは？**
 
 1. 教授がレビュー対象を指定
 2. レビュアーを effort: max で `TaskCreate` 起動
-   - 参照範囲：教授STATE.md + 全領域STATE.md + 指定された active/ ファイル + 関連する notebook/
+   - 参照範囲：STATE.md + 指定された active/ ファイル + 関連する notebook/
 3. レビュアーが指摘と洞察を教授に返す
 4. 教授が判断：
-   - 批判的指摘 → 該当STATE.mdの矛盾フラグに書き込む
-   - 新しい洞察 → 教授STATE.mdの洞察欄 or 仮説レジストリに追加
+   - 批判的指摘 → STATE.mdの矛盾欄に書き込む
+   - 新しい洞察 → STATE.mdの洞察欄 or 仮説レジストリに追加
 5. ユーザーに報告 + 対応案
 
 ### 対象指定なし
 
-- 教授STATE.md + 全領域STATE.mdベースの全体レビュー
+- STATE.mdベースの全体レビュー
 
 ---
 
@@ -357,32 +353,42 @@ e. **直近で最も困っていることは？**
 
 ### paper/ の作成
 
-ユーザーが論文の話を始めたとき、`paper/STATE.md` がなければ：
+ユーザーが論文の話を始めたとき、STATE.md に論文セクションがなければ：
 1. 教授がヒアリング（ターゲット / main contribution / ストーリーの軸）
-2. `paper/` ディレクトリと `paper/STATE.md`, `paper/sections/` を作成
-3. 教授が全STATE.mdを読んで構成案を提案
-4. 承認 → paper/STATE.md に記録
+2. `paper/` ディレクトリと `paper/sections/` を作成
+3. STATE.md の「論文」セクションにヒアリング結果を記録
+4. 教授がSTATE.md全体を読んで構成案を提案
+5. 承認 → STATE.md の論文セクションに構成を記録
 
 ### 執筆フロー
 
 - 教授が直接対応する
-- 参照順序：paper/STATE.md → 該当セクション（paper/sections/）→ 関連STATE.md
+- 参照順序：STATE.mdの論文セクション → 該当セクション（paper/sections/）→ STATE.mdの他領域
 - 図表は experiments/active/figures/ をパスで参照（paper/sections/ にコピーしない）
 - 執筆後、他セクションとの矛盾がないか確認
 - 大規模な整合性チェックが必要なら `/lab review` で対応
-- paper/STATE.md を更新
+- STATE.md の論文セクションを更新
 
 ---
 
 ## STATE.md / log.md 管理ルール
 
-- 全STATE.md の更新は教授が一元管理する
+STATE.md は研究の本体である。要約ではない。
+次のセッションで会話履歴がなくても、STATE.md だけでゼロから研究を再開できる詳細さで書く。
+
+- STATE.md の更新は教授が一元管理する
 - log.md の追記は教授が一元管理する
-- 仮説レジストリは教授STATE.mdで一元管理する
-- STATE.mdの更新を後回しにしない。報告の前にSTATE.mdを更新する
-- 壁打ち中に出た重要な洞察は教授STATE.mdの洞察欄に即座に書く
-- STATE.mdは遠慮なく書く。省略せず根拠・数値・考察を十分に記録する
-- 重要な判断・発見はすぐSTATE.mdに書く（コンパクションで会話履歴が圧縮されてもSTATE.mdは残る）
+- STATE.md の更新を後回しにしない。報告の前に STATE.md を更新する
+- 壁打ち中に出た重要な洞察は STATE.md の洞察欄に即座に書く
+- 重要な判断・発見はすぐ STATE.md に書く（コンパクションで会話履歴が圧縮されても STATE.md は残る）
+
+### STATE.md に書く粒度
+
+- 仮説：背景・検証方針・関連する実験と文献・棄却リスクまで書く
+- 実験結果：数値・条件・比較対象・何が言えるかまで書く
+- 文献：自分たちの研究との関連・なぜ重要かまで書く
+- 棄却した仮説：なぜ棄却したか、どの実験・文献が根拠かを書く
+- 省略するな。STATE.md が薄いと次のセッションで研究の文脈が失われる
 
 ---
 
@@ -440,5 +446,5 @@ MCP 未設定でも動作するが、文献調査の精度が落ちる。
 
 - 教授が常にエントリーポイント。ユーザーにサブエージェントを意識させない
 - インタラクティブなステップでは必ず `AskUserQuestion` を使う
-- `/lab` 実行時は必ず CLAUDE.md → STATE.md群 → log.md の順で読む。記憶に頼らない
+- `/lab` 実行時は必ず CLAUDE.md → STATE.md → log.md の順で読む。記憶に頼らない
 - paper/ は論文の話が出るまで作成しない
