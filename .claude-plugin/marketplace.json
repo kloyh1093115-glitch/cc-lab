@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "lab",
-      "source": ".",
+      "source": "./plugins/lab",
       "description": "研究室シミュレーター。教授が思考・判断に集中し、サブエージェントに作業を委託する。成果物は .lab/ に蓄積。",
       "version": "1.0.0",
       "author": {
